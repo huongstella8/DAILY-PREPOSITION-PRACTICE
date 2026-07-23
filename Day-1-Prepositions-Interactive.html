@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 1 — Prepositions of Time (IN / ON / AT) · Interactive Worksheet</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<style>
+  :root{
+    --navy:#1f3864; --blue:#2e5395; --light:#dee6f2; --lighter:#eef2fa;
+    --accent:#c0392b; --green:#1e7145; --grey:#5b5b5b; --line:#c6d2e6;
+    --ok:#e6f4ea; --okbd:#1e7145; --bad:#fdecea; --badbd:#c0392b;
+  }
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;margin:0;
+    background:#f4f6fb;color:#1a1a1a;line-height:1.55;font-size:15px}
+  .wrap{max-width:920px;margin:0 auto;padding:0 18px 80px}
+
+  /* header */
+  header{position:sticky;top:0;z-index:50;background:var(--navy);color:#fff;
+    box-shadow:0 2px 8px rgba(0,0,0,.15)}
+  .hd-in{max-width:920px;margin:0 auto;padding:14px 18px;display:flex;
+    flex-wrap:wrap;align-items:center;gap:14px;justify-content:space-between}
+  .hd-title h1{margin:0;font-size:19px;letter-spacing:.3px}
+  .hd-title p{margin:2px 0 0;font-size:12.5px;opacity:.85}
+  .hd-fields{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .hd-fields label{font-size:12px;opacity:.9;display:block;margin-bottom:3px}
+  .hd-fields input{border:none;border-radius:6px;padding:8px 10px;font-size:14px;
+    min-width:180px;background:#fff;color:#111}
+  .hd-fields .datebox{min-width:130px}
+
+  h2{color:var(--navy);border-left:5px solid var(--blue);padding-left:10px;
+    margin:34px 0 12px;font-size:20px}
+  h3{color:var(--blue);margin:22px 0 8px;font-size:16px}
+  .lead{color:var(--grey);font-size:14px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:10px;
+    padding:18px 20px;margin:14px 0;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+
+  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+  th{background:var(--navy);color:#fff;font-weight:600}
+  tbody tr:nth-child(even){background:var(--lighter)}
+  .funnel td{font-size:14px}
+  .p-at{color:var(--accent);font-weight:700}
+  .p-on{color:var(--green);font-weight:700}
+  .p-in{color:var(--blue);font-weight:700}
+
+  /* level tabs */
+  .tabs{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 0}
+  .tab{border:1px solid var(--line);background:#fff;color:var(--navy);
+    padding:7px 14px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:600}
+  .tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .lvl{display:none}
+  .lvl.show{display:block}
+  .lvlband{font-size:12px;color:var(--grey);margin:4px 0 8px}
+
+  details summary{cursor:pointer;font-weight:600;color:var(--navy);font-size:16px}
+
+  /* exercises */
+  .q{margin:12px 0;padding:10px 12px;border:1px solid var(--line);border-radius:8px;
+    background:#fff}
+  .q .qtext{font-size:14.5px}
+  .qnum{display:inline-block;min-width:26px;font-weight:700;color:var(--blue)}
+  .gap{display:inline-block;border:none;border-bottom:2px solid var(--blue);
+    width:92px;text-align:center;font-size:14.5px;padding:2px 4px;background:#f9fbff}
+  .gap:focus{outline:none;background:#eef4ff}
+  .opts{margin-top:6px;display:flex;flex-wrap:wrap;gap:14px}
+  .opts label{font-size:14px;cursor:pointer}
+  .fb{margin-top:7px;font-size:13px;display:none;border-radius:6px;padding:6px 9px}
+  .fb.show{display:block}
+  .fb.correct{background:var(--ok);border-left:4px solid var(--okbd);color:#14532d}
+  .fb.wrong{background:var(--bad);border-left:4px solid var(--badbd);color:#7a1c14}
+  .q.correct{border-color:var(--okbd)}
+  .q.wrong{border-color:var(--badbd)}
+
+  .bar{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--line);
+    padding:14px 18px;display:flex;gap:12px;align-items:center;justify-content:center;
+    box-shadow:0 -2px 8px rgba(0,0,0,.06);flex-wrap:wrap}
+  button.primary{background:var(--navy);color:#fff;border:none;border-radius:8px;
+    padding:12px 26px;font-size:15px;font-weight:600;cursor:pointer}
+  button.ghost{background:#fff;color:var(--navy);border:1.5px solid var(--navy);
+    border-radius:8px;padding:11px 20px;font-size:14px;font-weight:600;cursor:pointer}
+  button:disabled{opacity:.5;cursor:not-allowed}
+
+  /* result */
+  #result{display:none;margin-top:20px}
+  .scorebox{text-align:center;background:#fff;border:2px solid var(--navy);
+    border-radius:12px;padding:22px}
+  .scorebox .big{font-size:44px;font-weight:800;color:var(--navy);margin:4px 0}
+  .scorebox .pct{font-size:18px;color:var(--green);font-weight:700}
+  .breakdown{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+  .chip{background:var(--lighter);border:1px solid var(--line);border-radius:8px;
+    padding:8px 14px;font-size:13px}
+  .note{font-size:12.5px;color:var(--grey);text-align:center;margin-top:10px}
+  .hint{font-size:12px;color:var(--grey)}
+  @media print{.bar,header{position:static}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hd-in">
+    <div class="hd-title">
+      <h1>Day 1 · Prepositions of Time — IN / ON / AT</h1>
+      <p>Pre-Intermediate (CEFR A2) · 30-Day Preposition Review · Interactive Worksheet</p>
+    </div>
+    <div class="hd-fields">
+      <div>
+        <label for="stuName">Student name</label>
+        <input id="stuName" type="text" placeholder="Type your name…" autocomplete="off">
+      </div>
+      <div>
+        <label for="stuDate">Date</label>
+        <input id="stuDate" class="datebox" type="text" readonly>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ================= STUDY: 5-LEVEL COLLOCATION BANK ================= -->
+  <h2>Study Bank · Preposition Collocations by CEFR Level</h2>
+  <p class="lead">A reference bank of dependent prepositions (adjective + / verb + / noun + preposition),
+  graded from A2 to C2. Learn them as whole chunks — the preposition is fixed.</p>
+
+  <div class="card">
+    <div class="tabs" id="lvlTabs">
+      <div class="tab active" data-l="a2">A1–A2</div>
+      <div class="tab" data-l="b1">B1</div>
+      <div class="tab" data-l="b2">B2</div>
+      <div class="tab" data-l="c1">C1</div>
+      <div class="tab" data-l="c2">C2</div>
+    </div>
+
+    <!-- A2 -->
+    <div class="lvl show" id="lvl-a2">
+      <div class="lvlband"><b>A1–A2 · Elementary to Pre-Intermediate</b> — everyday time / place / movement + the most frequent chunks</div>
+      <table><thead><tr><th>Category</th><th>Collocations (learn as chunks)</th></tr></thead><tbody>
+        <tr><td>Time</td><td>at 6 o'clock · at night · at the weekend · on Monday · on my birthday · in the morning · in July · in summer · in 2020</td></tr>
+        <tr><td>Place</td><td>in the box · in the room · on the table · on the wall · at home · at school · at work · at the bus stop · next to · in front of</td></tr>
+        <tr><td>Movement</td><td>go to · come from · get on/off (the bus) · go into · walk to · fly to</td></tr>
+        <tr><td>Adjective + prep</td><td>good at · interested in · afraid of · married to · full of · different from</td></tr>
+        <tr><td>Verb + prep</td><td>listen to · look at · wait for · talk to · think about · belong to · look for</td></tr>
+      </tbody></table>
+    </div>
+
+    <!-- B1 -->
+    <div class="lvl" id="lvl-b1">
+      <div class="lvlband"><b>B1 · Intermediate</b> — core dependent prepositions</div>
+      <table><thead><tr><th>Category</th><th>Collocations</th></tr></thead><tbody>
+        <tr><td>Adjective + prep</td><td>proud of · worried about · keen on · famous for · similar to · responsible for · capable of · aware of · fond of · pleased with · angry with · bored with · kind to</td></tr>
+        <tr><td>Verb + prep</td><td>depend on · apologize for · agree with · succeed in · apply for · believe in · concentrate on · insist on · rely on · complain about · pay for · search for</td></tr>
+        <tr><td>Noun + prep</td><td>reason for · need for · interest in · a solution to · the cause of · an example of</td></tr>
+      </tbody></table>
+    </div>
+
+    <!-- B2 -->
+    <div class="lvl" id="lvl-b2">
+      <div class="lvlband"><b>B2 · Upper-Intermediate</b> — wider range + verb + object + preposition patterns</div>
+      <table><thead><tr><th>Category</th><th>Collocations</th></tr></thead><tbody>
+        <tr><td>Adjective + prep</td><td>guilty of · accustomed to · dependent on · superior/inferior to · suspicious of · grateful to (sb) for (sth) · notorious for · addicted to · enthusiastic about · content with</td></tr>
+        <tr><td>Verb + prep</td><td>accuse (sb) of · congratulate (sb) on · blame (sb) for · provide (sb) with · prevent (sb) from · remind (sb) of · warn (sb) about · deal with · cope with · recover from · refer to · consist of</td></tr>
+        <tr><td>Noun + prep</td><td>an increase in · a solution to · attitude towards · impact/effect on · the advantage of · demand for · respect for · connection with · difference between</td></tr>
+      </tbody></table>
+    </div>
+
+    <!-- C1 -->
+    <div class="lvl" id="lvl-c1">
+      <div class="lvlband"><b>C1 · Advanced</b> — lower-frequency, more formal collocations</div>
+      <table><thead><tr><th>Category</th><th>Collocations</th></tr></thead><tbody>
+        <tr><td>Adjective + prep</td><td>adept at · averse to · conducive to · devoid of · indicative of · oblivious to/of · synonymous with · tantamount to · impervious to · resistant to · akin to · reliant on</td></tr>
+        <tr><td>Verb + prep</td><td>abstain from · adhere to · attribute (sth) to · culminate in · deprive (sb) of · embark on · refrain from · resort to · stem from · subscribe to · testify to · tamper with</td></tr>
+        <tr><td>Noun + prep</td><td>an aptitude for · disregard for · insight into · aversion to · a propensity for · deviation from · correlation with/between · an allusion to</td></tr>
+      </tbody></table>
+    </div>
+
+    <!-- C2 -->
+    <div class="lvl" id="lvl-c2">
+      <div class="lvlband"><b>C2 · Proficiency</b> — near-native, idiomatic and literary collocations</div>
+      <table><thead><tr><th>Category</th><th>Collocations</th></tr></thead><tbody>
+        <tr><td>Adjective + prep</td><td>bereft of · complicit in · contingent upon · emblematic of · fraught with · incumbent upon · redolent of · replete with · riddled with · steeped in</td></tr>
+        <tr><td>Verb + prep</td><td>acquiesce to/in · apprise (sb) of · coincide with · expound on · impinge on · militate against · predicate (sth) on · reconcile (sth) with · vacillate between · verge on</td></tr>
+        <tr><td>Noun + prep</td><td>a penchant for · a semblance of · a testament to · a dearth of · a precursor to · antipathy towards · an affinity with/for</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <!-- ================= TARGET SET ================= -->
+  <h2>Today's Focus · The IN / ON / AT Funnel</h2>
+  <div class="card">
+    <p>Zoom lens rule: <span class="p-in">IN</span> = big span (year, month, season)
+    → <span class="p-on">ON</span> = a specific day → <span class="p-at">AT</span> = an exact point (a clock time).
+    The more specific the time, the "smaller" the preposition.</p>
+    <table class="funnel"><thead><tr><th>Prep</th><th>Use for</th><th>Examples</th></tr></thead><tbody>
+      <tr><td><span class="p-at">AT</span></td><td>clock times · mealtimes · fixed points · night</td>
+        <td>at 7 o'clock, at noon, at midnight, at night, at lunchtime, at the weekend (BrE), at Christmas, at the moment</td></tr>
+      <tr><td><span class="p-on">ON</span></td><td>days · dates · a specific day · day + part of day</td>
+        <td>on Monday, on 5th June, on my birthday, on Christmas Day, on Friday morning, on weekdays, on time</td></tr>
+      <tr><td><span class="p-in">IN</span></td><td>months · years · seasons · centuries · parts of the day · long periods</td>
+        <td>in April, in 2026, in summer, in the morning, in the 21st century, in the holidays, in two days (= after two days)</td></tr>
+    </tbody></table>
+    <h3>Watch out (common learner errors)</h3>
+    <ul>
+      <li><b>at night</b> BUT <b>in the morning / afternoon / evening</b>.</li>
+      <li>Day + part of day → use ON: <b>on Monday morning</b> (not "in Monday morning").</li>
+      <li>No preposition before <b>last, next, this, every, tomorrow, yesterday</b>: "See you <b>next Monday</b>" (not "on next Monday").</li>
+      <li><b>in time</b> = with time to spare  ≠  <b>on time</b> = punctual / as scheduled.</li>
+    </ul>
+  </div>
+
+  <!-- ================= EXERCISES ================= -->
+  <form id="quiz" onsubmit="return false;">
+
+    <h2>Part A · Gap-fill — write <span class="p-in">in</span> / <span class="p-on">on</span> / <span class="p-at">at</span></h2>
+    <p class="lead">Type the correct preposition. If none is needed, type a dash <b>—</b>.</p>
+    <div id="partA"></div>
+
+    <h2>Part B · Reflex Drill — choose the fastest correct answer</h2>
+    <p class="lead">Mixed time &amp; dependent prepositions (A2–B2). Aim for ~6 seconds per item.</p>
+    <div id="partB"></div>
+
+    <h2>Part C · Dependent Prepositions (B1–C1) — write the missing preposition</h2>
+    <p class="lead">From the Study Bank above. One word each.</p>
+    <div id="partC"></div>
+
+  </form>
+
+  <!-- ================= RESULT ================= -->
+  <div id="result">
+    <h2>Your Results</h2>
+    <div class="scorebox">
+      <div>Score</div>
+      <div class="big" id="scoreLine">0 / 31</div>
+      <div class="pct" id="pctLine">0%</div>
+      <div class="breakdown" id="breakdown"></div>
+      <div class="note" id="stamp"></div>
+    </div>
+    <p class="note">Click <b>Download PDF</b> below to save your results report. You can also <b>Print</b> it.</p>
+  </div>
+
+</div>
+
+<div class="bar">
+  <button class="primary" id="submitBtn">Submit &amp; Grade</button>
+  <button class="ghost" id="pdfBtn" disabled>Download PDF</button>
+  <button class="ghost" id="printBtn" disabled>Print</button>
+  <button class="ghost" id="resetBtn">Reset</button>
+</div>
+
+<script>
+/* ---------------- DATA ---------------- */
+// Gap-fill: arrays = accepted answers (case-insensitive)
+const partA = [
+  {q:"The train leaves ____ 6:45.", a:["at"]},
+  {q:"We first met ____ Monday.", a:["on"]},
+  {q:"She was born ____ 1998.", a:["in"]},
+  {q:"I don't usually work ____ night.", a:["at"]},
+  {q:"My birthday is ____ July.", a:["in"]},
+  {q:"See you ____ the weekend!", a:["at","on"], note:"at the weekend (BrE) / on the weekend (AmE)"},
+  {q:"The lesson starts ____ 9 a.m.", a:["at"]},
+  {q:"It gets very cold here ____ winter.", a:["in"]},
+  {q:"We're leaving ____ Friday morning.", a:["on"], note:"day + part of day → ON"},
+  {q:"He'll call you back ____ two hours.", a:["in"], note:"in + period = after that period"},
+  {q:"The bakery opens ____ 8 o'clock.", a:["at"]},
+  {q:"They got married ____ 15th May.", a:["on"]},
+  {q:"See you ____ next week!", a:["—","-","none","no","x"], note:"no preposition before 'next'"},
+];
+
+const partB = [
+  {q:"I'm really good ____ maths.", o:["at","in","on"], a:0},
+  {q:"She's afraid ____ spiders.", o:["from","of","at"], a:1},
+  {q:"We finally arrived ____ the airport.", o:["to","at","in"], a:1, note:"arrive AT a point / IN a city"},
+  {q:"This umbrella belongs ____ me.", o:["to","for","with"], a:0},
+  {q:"He apologized ____ being late.", o:["of","for","about"], a:1},
+  {q:"I'm not interested ____ politics.", o:["on","at","in"], a:2},
+  {q:"Children often depend ____ their parents.", o:["of","on","from"], a:1},
+  {q:"Congratulations ____ your new job!", o:["for","on","of"], a:1},
+  {q:"The film is based ____ a true story.", o:["on","in","of"], a:0},
+  {q:"Please try to be ____ time for the meeting.", o:["in","on","at"], a:1, note:"on time = punctual"},
+];
+
+const partC = [
+  {q:"He is responsible ____ the whole team.", a:["for"], lvl:"B1"},
+  {q:"The final payment is contingent ____ approval.", a:["upon","on"], lvl:"C2"},
+  {q:"Her success stems ____ years of hard work.", a:["from"], lvl:"C1"},
+  {q:"I'm not familiar ____ this software yet.", a:["with"], lvl:"B1"},
+  {q:"They accused the manager ____ dishonesty.", a:["of"], lvl:"B2"},
+  {q:"The study gives real insight ____ the problem.", a:["into"], lvl:"C1"},
+  {q:"She has a natural aptitude ____ languages.", a:["for"], lvl:"C1"},
+  {q:"All staff must adhere ____ the safety rules.", a:["to"], lvl:"C1"},
+];
+
+/* ---------------- BUILD ---------------- */
+function norm(s){return (s||"").trim().toLowerCase().replace(/[.’']/g,"").replace(/\s+/g,"");}
+const A_HOST=document.getElementById('partA');
+const B_HOST=document.getElementById('partB');
+const C_HOST=document.getElementById('partC');
+
+partA.forEach((it,i)=>{
+  const parts=it.q.split("____");
+  A_HOST.insertAdjacentHTML('beforeend',
+    `<div class="q" id="A${i}"><div class="qtext"><span class="qnum">${i+1}.</span>`+
+    `${parts[0]}<input class="gap" data-p="A" data-i="${i}" autocomplete="off">${parts[1]||""}</div>`+
+    `<div class="fb" id="fbA${i}"></div></div>`);
+});
+partB.forEach((it,i)=>{
+  const parts=it.q.split("____");
+  const opts=it.o.map((op,k)=>`<label><input type="radio" name="B${i}" value="${k}"> ${String.fromCharCode(65+k)}) ${op}</label>`).join("");
+  B_HOST.insertAdjacentHTML('beforeend',
+    `<div class="q" id="B${i}"><div class="qtext"><span class="qnum">${i+1}.</span>${parts[0]}<b>____</b>${parts[1]||""}</div>`+
+    `<div class="opts">${opts}</div><div class="fb" id="fbB${i}"></div></div>`);
+});
+partC.forEach((it,i)=>{
+  const parts=it.q.split("____");
+  C_HOST.insertAdjacentHTML('beforeend',
+    `<div class="q" id="C${i}"><div class="qtext"><span class="qnum">${i+1}.</span>`+
+    `${parts[0]}<input class="gap" data-p="C" data-i="${i}" autocomplete="off">${parts[1]||""} `+
+    `<span class="hint">[${it.lvl}]</span></div><div class="fb" id="fbC${i}"></div></div>`);
+});
+
+/* ---------------- DATE ---------------- */
+const dateInput=document.getElementById('stuDate');
+const now=new Date();
+dateInput.value=now.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+
+/* ---------------- GRADE ---------------- */
+let graded=false;
+function gradeGap(prefix,data){
+  let correct=0;
+  data.forEach((it,i)=>{
+    const inp=document.querySelector(`input[data-p="${prefix}"][data-i="${i}"]`);
+    const fb=document.getElementById(`fb${prefix}${i}`);
+    const qbox=document.getElementById(`${prefix}${i}`);
+    const accepted=it.a.map(norm);
+    const ok=accepted.includes(norm(inp.value));
+    qbox.classList.remove('correct','wrong');fb.classList.remove('correct','wrong');
+    if(ok){correct++;qbox.classList.add('correct');fb.classList.add('correct','show');
+      fb.innerHTML=`✓ Correct — <b>${it.a[0]}</b>${it.note?` · ${it.note}`:""}`;}
+    else{qbox.classList.add('wrong');fb.classList.add('wrong','show');
+      fb.innerHTML=`✗ Your answer: <i>${inp.value||"(blank)"}</i> → Correct: <b>${it.a[0]}</b>${it.note?` · ${it.note}`:""}`;}
+    it._your=inp.value||"(blank)";it._ok=ok;
+  });
+  return correct;
+}
+function gradeMCQ(prefix,data){
+  let correct=0;
+  data.forEach((it,i)=>{
+    const sel=document.querySelector(`input[name="${prefix}${i}"]:checked`);
+    const fb=document.getElementById(`fb${prefix}${i}`);
+    const qbox=document.getElementById(`${prefix}${i}`);
+    const chosen=sel?parseInt(sel.value):-1;
+    const ok=chosen===it.a;
+    qbox.classList.remove('correct','wrong');fb.classList.remove('correct','wrong');
+    const correctTxt=`${String.fromCharCode(65+it.a)}) ${it.o[it.a]}`;
+    if(ok){correct++;qbox.classList.add('correct');fb.classList.add('correct','show');
+      fb.innerHTML=`✓ Correct — <b>${correctTxt}</b>${it.note?` · ${it.note}`:""}`;}
+    else{qbox.classList.add('wrong');fb.classList.add('wrong','show');
+      const yourTxt=chosen>=0?`${String.fromCharCode(65+chosen)}) ${it.o[chosen]}`:"(no answer)";
+      fb.innerHTML=`✗ Your answer: <i>${yourTxt}</i> → Correct: <b>${correctTxt}</b>${it.note?` · ${it.note}`:""}`;}
+    it._your=chosen>=0?`${String.fromCharCode(65+chosen)}) ${it.o[chosen]}`:"(blank)";it._ok=ok;
+  });
+  return correct;
+}
+
+function buildRows(){
+  const rows=[];
+  const corr=(it)=> (typeof it.a==='number') ? (String.fromCharCode(65+it.a)+') '+it.o[it.a]) : it.a[0];
+  const push=(sec,data)=>data.forEach((it,i)=>rows.push(
+    [sec+(i+1), it.q.replace("____","_____"), String(it._your), corr(it), it._ok?'Y':'N']));
+  push("A",partA);push("B",partB);push("C",partC);
+  return rows;
+}
+
+document.getElementById('submitBtn').addEventListener('click',()=>{
+  const name=document.getElementById('stuName').value.trim();
+  if(!name){alert("Please type your name in the header before submitting.");
+    document.getElementById('stuName').focus();return;}
+  const cA=gradeGap('A',partA), cB=gradeMCQ('B',partB), cC=gradeGap('C',partC);
+  const total=partA.length+partB.length+partC.length;
+  const score=cA+cB+cC;
+  const pct=Math.round(score/total*100);
+  document.getElementById('scoreLine').textContent=`${score} / ${total}`;
+  document.getElementById('pctLine').textContent=`${pct}%`;
+  document.getElementById('breakdown').innerHTML=
+    `<span class="chip">Part A (Gap-fill): <b>${cA}/${partA.length}</b></span>`+
+    `<span class="chip">Part B (Reflex): <b>${cB}/${partB.length}</b></span>`+
+    `<span class="chip">Part C (Collocations): <b>${cC}/${partC.length}</b></span>`;
+  document.getElementById('stamp').textContent=
+    `${name} · ${dateInput.value} · completed ${now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}`;
+  document.getElementById('result').style.display='block';
+  document.getElementById('pdfBtn').disabled=false;
+  document.getElementById('printBtn').disabled=false;
+  graded=true;
+  document.getElementById('result').scrollIntoView({behavior:'smooth'});
+});
+
+/* ---------------- PDF (built natively with jsPDF — no DOM screenshot) ---------------- */
+function exportPDF(name,score,total,pct,cA,cB,cC){
+  const safe=(name||"student").replace(/[^a-z0-9]+/gi,"_");
+  const JsPDF=(window.jspdf&&window.jspdf.jsPDF)||window.jsPDF;
+  if(!JsPDF){
+    alert("The PDF library could not load (no internet connection?).\nUse the Print button and choose 'Save as PDF' instead.");
+    return;
+  }
+  const doc=new JsPDF({unit:'mm',format:'a4',orientation:'portrait'});
+  const W=210;
+  // header band
+  doc.setFillColor(31,56,100);doc.rect(0,0,W,22,'F');
+  doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(15);
+  doc.text('Day 1  -  Prepositions of Time (IN / ON / AT)',12,11);
+  doc.setFont('helvetica','normal');doc.setFontSize(9);
+  doc.text('30-Day Preposition Review  -  Results Report',12,17.5);
+  // student info
+  doc.setTextColor(20,20,20);doc.setFontSize(10);
+  doc.text('Student: '+name,12,31);
+  doc.text('Date: '+dateInput.value,108,31);
+  doc.text('Completed: '+now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}),150,31);
+  // score box
+  doc.setDrawColor(31,56,100);doc.setLineWidth(0.5);doc.roundedRect(12,37,52,28,2,2);
+  doc.setFontSize(8);doc.setTextColor(90,90,90);doc.text('TOTAL SCORE',16,43);
+  doc.setFont('helvetica','bold');doc.setFontSize(22);doc.setTextColor(31,56,100);
+  doc.text(score+' / '+total,16,54);
+  doc.setFontSize(13);doc.setTextColor(30,113,69);doc.text(pct+'%',16,62);
+  // breakdown
+  doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(20,20,20);
+  doc.text('Part A  -  Gap-fill (in/on/at):      '+cA+' / '+partA.length,72,44);
+  doc.text('Part B  -  Reflex Drill:                 '+cB+' / '+partB.length,72,51);
+  doc.text('Part C  -  Dependent prep (B1-C1):  '+cC+' / '+partC.length,72,58);
+  const msg=pct>=80?'Excellent - strong automatic control.'
+    :pct>=60?'Good - review the items marked N.'
+    :'Keep practising - redo the funnel rule and the Study Bank.';
+  doc.setTextColor(90,90,90);doc.setFontSize(9);
+  doc.text(doc.splitTextToSize(msg,122),72,64);
+  // details table — call works whether autotable patches doc.autoTable
+  // or exposes a global/UMD function.
+  const tableOpts={
+    startY:70,
+    head:[['#','Question','Your answer','Correct','OK']],
+    body:buildRows(),
+    styles:{fontSize:8,cellPadding:1.6,valign:'middle',overflow:'linebreak'},
+    headStyles:{fillColor:[31,56,100],textColor:[255,255,255]},
+    alternateRowStyles:{fillColor:[238,242,250]},
+    columnStyles:{0:{cellWidth:12,halign:'center'},1:{cellWidth:86},
+      2:{cellWidth:38},3:{cellWidth:34},4:{cellWidth:14,halign:'center'}},
+    didParseCell:function(d){
+      if(d.section==='body'&&d.column.index===4){
+        d.cell.styles.textColor= d.cell.raw==='Y'?[30,113,69]:[192,57,43];
+        d.cell.styles.fontStyle='bold';
+      }
+    }
+  };
+  const globalAT=(window.jspdf&&window.jspdf.autoTable)||window.autoTable;
+  if(typeof doc.autoTable==='function') doc.autoTable(tableOpts);
+  else if(typeof globalAT==='function') globalAT(doc,tableOpts);
+  else { alert('PDF table plugin failed to load. Please retry with an internet connection.'); return; }
+  let y=(doc.lastAutoTable?doc.lastAutoTable.finalY:70)+8;
+  doc.setFontSize(8);doc.setTextColor(120,120,120);
+  doc.text('OK column: Y = correct, N = incorrect.  Generated by the interactive worksheet.',12,y);
+  doc.save('Day1_Prepositions_'+safe+'.pdf');
+}
+
+document.getElementById('pdfBtn').addEventListener('click',()=>{
+  if(!graded)return;
+  const name=document.getElementById('stuName').value.trim()||"student";
+  const cA=partA.filter(x=>x._ok).length,cB=partB.filter(x=>x._ok).length,cC=partC.filter(x=>x._ok).length;
+  const total=partA.length+partB.length+partC.length,score=cA+cB+cC;
+  exportPDF(name,score,total,Math.round(score/total*100),cA,cB,cC);
+});
+document.getElementById('printBtn').addEventListener('click',()=>window.print());
+document.getElementById('resetBtn').addEventListener('click',()=>location.reload());
+
+/* ---------------- TABS ---------------- */
+document.getElementById('lvlTabs').addEventListener('click',e=>{
+  const t=e.target.closest('.tab');if(!t)return;
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.lvl').forEach(x=>x.classList.remove('show'));
+  t.classList.add('active');
+  document.getElementById('lvl-'+t.dataset.l).classList.add('show');
+});
+</script>
+</body>
+</html>
