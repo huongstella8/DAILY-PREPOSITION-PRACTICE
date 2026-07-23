@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 1 — Daily Routines &amp; Habits | Phrasal Verbs &amp; Collocations</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --ink:#1e293b; --sub:#475569; --line:#e2e8f0; --brand:#4338ca; --brand2:#6366f1;
+    --ok:#16a34a; --okbg:#dcfce7; --bad:#dc2626; --badbg:#fee2e2; --warnbg:#fef9c3;
+    --card:#ffffff; --bg:#f1f5f9; --accent:#eef2ff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6;font-size:15px}
+  .wrap{max-width:860px;margin:0 auto;padding:24px 16px 80px}
+  header.top{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;
+    border-radius:16px;padding:22px 24px;box-shadow:0 8px 24px rgba(67,56,202,.25)}
+  header.top .brand{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+    color:#c7d2fe;margin-bottom:8px}
+  header.top h1{margin:0 0 2px;font-size:22px;letter-spacing:.2px}
+  header.top .sub{opacity:.92;font-size:13.5px;margin-bottom:16px}
+  .idrow{display:flex;flex-wrap:wrap;gap:12px}
+  .idrow .fld{flex:1;min-width:180px}
+  .idrow label{display:block;font-size:12px;opacity:.9;margin-bottom:4px;font-weight:600}
+  .idrow input{width:100%;border:none;border-radius:9px;padding:9px 12px;font-size:15px;
+    background:rgba(255,255,255,.96);color:var(--ink)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:20px 22px;margin-top:18px;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+  h2.sec{font-size:17px;margin:0 0 4px;color:var(--brand);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .badge{background:var(--accent);color:var(--brand);border-radius:999px;font-size:11px;
+    font-weight:700;padding:3px 9px}
+  .hint{color:var(--sub);font-size:13px;margin:2px 0 14px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  th{background:var(--accent);color:var(--brand);font-weight:700}
+  code.chunk{background:#eef2ff;color:#3730a3;border-radius:5px;padding:1px 6px;font-weight:700;
+    font-family:inherit;white-space:nowrap}
+  .q{margin:14px 0}
+  .q .prompt{font-size:14px;margin-bottom:6px}
+  .q .prompt .n{font-weight:700;color:var(--brand);margin-right:6px}
+  .vi{color:#7c3aed;font-style:italic}
+  textarea,input.txt{width:100%;border:1px solid #cbd5e1;border-radius:9px;padding:9px 11px;
+    font-size:14.5px;font-family:inherit;resize:vertical}
+  textarea{min-height:44px}
+  input.blank{width:120px;border:none;border-bottom:2px solid var(--brand2);background:var(--accent);
+    border-radius:6px 6px 0 0;padding:4px 8px;font-size:14px;font-family:inherit;text-align:center;margin:0 3px}
+  .limit{font-size:12px;color:var(--sub);font-style:italic;margin-left:6px}
+  .fb{margin-top:6px;font-size:13px;display:none}
+  .fb.show{display:block}
+  .fb .verdict{font-weight:700}
+  .fb.good .verdict{color:var(--ok)} .fb.bad .verdict{color:var(--bad)} .fb.warn .verdict{color:#a16207}
+  .fb .model{color:var(--sub);font-style:italic;margin-top:2px}
+  .fb .model b{color:var(--brand);font-style:normal}
+  .sentapp .q{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+  .sentapp .tag{min-width:180px;font-weight:700}
+  .sentapp input.txt{flex:1;min-width:220px}
+  #chunkmeter{font-size:13px;font-weight:700;margin-top:8px}
+  .chip{display:inline-block;font-size:11.5px;padding:3px 8px;border-radius:999px;margin:3px 4px 0 0;
+    background:#e2e8f0;color:#475569}
+  .chip.on{background:var(--okbg);color:#166534}
+  .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+  button{cursor:pointer;border:none;border-radius:11px;padding:13px 22px;font-size:15px;font-weight:700}
+  #scoreBtn{background:var(--brand);color:#fff;box-shadow:0 4px 14px rgba(67,56,202,.3)}
+  #pdfBtn{background:#fff;color:var(--brand);border:2px solid var(--brand);display:none}
+  #resetBtn{background:#fff;color:var(--sub);border:1px solid var(--line)}
+  button:active{transform:translateY(1px)}
+  #scorecard{display:none;margin-top:20px;border:2px solid var(--brand);border-radius:14px;
+    padding:22px;background:linear-gradient(135deg,#f5f3ff,#eef2ff)}
+  #scorecard h2{margin:0 0 8px;color:var(--brand)}
+  .bigscore{font-size:40px;font-weight:800;color:var(--brand);line-height:1}
+  .pct{font-size:16px;color:var(--sub);margin-left:8px}
+  .bar{height:12px;background:#e2e8f0;border-radius:999px;overflow:hidden;margin:12px 0}
+  .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--brand2),var(--brand))}
+  .brk{display:grid;grid-template-columns:1fr auto;gap:6px 14px;font-size:14px;margin-top:6px}
+  .brk .lbl{color:var(--sub)}
+  .verdict-line{margin-top:12px;font-size:14.5px;font-weight:600}
+  .review{margin-top:16px}
+  .review h3{font-size:15px;color:var(--brand);margin:0 0 6px}
+  .review table{font-size:12.5px;background:#fff}
+  .review td.yn{text-align:center;font-weight:700;width:34px}
+  .review td.mdl{color:#3730a3}
+  footer{text-align:center;color:var(--sub);font-size:12px;margin-top:30px}
+  .note{background:var(--warnbg);border-radius:10px;padding:10px 14px;font-size:13px;margin-top:12px}
+</style>
+</head>
+<body>
+<div class="wrap" id="sheet">
+
+  <header class="top">
+    <div class="brand">Huong Stella Paradigm</div>
+    <h1>🗓️ Day 1 — Daily Routines &amp; Habits</h1>
+    <div class="sub">30-Day Phrasal Verbs &amp; Collocations Building · Cut the wordiness · Level B1–B2+</div>
+    <div class="idrow">
+      <div class="fld"><label>Student name</label><input id="stName" placeholder="Type your name..."></div>
+      <div class="fld" style="max-width:150px"><label>Date</label><input id="stDate"></div>
+      <div class="fld" style="max-width:120px"><label>Class / Level</label><input id="stClass" placeholder="Upper-Int"></div>
+    </div>
+  </header>
+
+  <!-- REFERENCE BANKS -->
+  <div class="card">
+    <h2 class="sec">📚 Today's chunks <span class="badge">Study before you start</span></h2>
+    <div class="hint">Speak with phrasal verbs · Write with collocations. Goal: compress long, wordy sentences into natural chunks.</div>
+    <table>
+      <tr><th>🗣️ Speaking — Phrasal verb</th><th>Meaning</th><th>Wordy version ✗</th></tr>
+      <tr><td><code class="chunk">wind down</code></td><td>to relax after work/activity</td><td>spend time doing relaxing things to feel less stressed</td></tr>
+      <tr><td><code class="chunk">doze off</code></td><td>to fall asleep unintentionally</td><td>accidentally start to sleep for a short time</td></tr>
+      <tr><td><code class="chunk">get around to</code></td><td>to finally do sth you delayed</td><td>finally have time to do the thing I kept delaying</td></tr>
+      <tr><td><code class="chunk">put (sth) off</code></td><td>to postpone / delay</td><td>decide to do something at a later time</td></tr>
+    </table>
+    <table style="margin-top:14px">
+      <tr><th>✍️ Writing — Collocation / Prep. phrase</th><th>Meaning</th><th>Wordy version ✗</th></tr>
+      <tr><td><code class="chunk">a hectic schedule</code></td><td>a very busy timetable</td><td>a schedule that is very busy and full of things</td></tr>
+      <tr><td><code class="chunk">on a daily basis</code></td><td>every day</td><td>in a way that happens every single day</td></tr>
+      <tr><td><code class="chunk">strike a balance between</code></td><td>to balance two things</td><td>try to make two things equal so neither is too much</td></tr>
+      <tr><td><code class="chunk">stick to a routine</code></td><td>to keep to a fixed routine</td><td>keep doing the same daily plan and not change it</td></tr>
+    </table>
+  </div>
+
+  <!-- EX1 TRAP -->
+  <div class="card">
+    <h2 class="sec">① Wordiness trap <span class="badge">3 pts</span></h2>
+    <div class="hint">Rewrite each long, wordy sentence into a concise one using exactly one of today's chunks.</div>
+    <div class="q"><div class="prompt"><span class="n">T1.</span>After a long working day, I usually spend some time doing relaxing things so that my body and mind feel less stressed.</div>
+      <textarea data-a="trap0"></textarea><div class="fb" id="fb_trap0"></div></div>
+    <div class="q"><div class="prompt"><span class="n">T2.</span>Because I was really tired, I accidentally started to fall asleep for a short time while I was watching TV.</div>
+      <textarea data-a="trap1"></textarea><div class="fb" id="fb_trap1"></div></div>
+    <div class="q"><div class="prompt"><span class="n">T3.</span>I have wanted to clean my room for a long time but I kept delaying it and only finally did it yesterday.</div>
+      <textarea data-a="trap2"></textarea><div class="fb" id="fb_trap2"></div></div>
+  </div>
+
+  <!-- EX2 DRILL A -->
+  <div class="card">
+    <h2 class="sec">② Drill A — Trim wordy → concise <span class="badge">6 pts</span></h2>
+    <div class="hint">Rewrite using exactly one chunk. Cut at least 40% of the words.</div>
+    <div class="q"><div class="prompt"><span class="n">1.</span>In the evening, I usually spend time doing calm activities so that I feel relaxed before sleeping.</div>
+      <textarea data-a="a0"></textarea><div class="fb" id="fb_a0"></div></div>
+    <div class="q"><div class="prompt"><span class="n">2.</span>I was so tired that I unintentionally fell asleep for a few minutes on the bus.</div>
+      <textarea data-a="a1"></textarea><div class="fb" id="fb_a1"></div></div>
+    <div class="q"><div class="prompt"><span class="n">3.</span>I had planned to reply to those emails for days, and I only managed to do it this morning.</div>
+      <textarea data-a="a2"></textarea><div class="fb" id="fb_a2"></div></div>
+    <div class="q"><div class="prompt"><span class="n">4.</span>My work calendar is extremely busy and completely full of meetings this week.</div>
+      <textarea data-a="a3"></textarea><div class="fb" id="fb_a3"></div></div>
+    <div class="q"><div class="prompt"><span class="n">5.</span>He checks the news every single day without missing a day.</div>
+      <textarea data-a="a4"></textarea><div class="fb" id="fb_a4"></div></div>
+    <div class="q"><div class="prompt"><span class="n">6.</span>As a student, it is difficult to make study time and rest time equal.</div>
+      <textarea data-a="a5"></textarea><div class="fb" id="fb_a5"></div></div>
+  </div>
+
+  <!-- EX3 DRILL B -->
+  <div class="card">
+    <h2 class="sec">③ Drill B — Fill the gap <span class="badge">11 pts</span></h2>
+    <div class="hint">Fill in the phrasal-verb particle / collocation preposition.</div>
+    <div class="q"><span style="font-weight:700;color:var(--brand)">1.</span> I try to wind <input class="blank" data-b="down"> with music after a stressful day.</div>
+    <div class="q"><span style="font-weight:700;color:var(--brand)">2.</span> She kept putting <input class="blank" data-b="off"> the dentist appointment.</div>
+    <div class="q"><span style="font-weight:700;color:var(--brand)">3.</span> Grandpa often dozes <input class="blank" data-b="off"> after lunch.</div>
+    <div class="q"><span style="font-weight:700;color:var(--brand)">4.</span> It took months, but I finally got <input class="blank" data-b="around"> <input class="blank" data-b="to"> fixing the bike.</div>
+    <div class="q"><span style="font-weight:700;color:var(--brand)">5.</span> Parents struggle to strike a balance <input class="blank" data-b="between"> their career <input class="blank" data-b="and"> their family.</div>
+    <div class="q"><span style="font-weight:700;color:var(--brand)">6.</span> He goes for a run <input class="blank" data-b="on"> a daily <input class="blank" data-b="basis">.</div>
+    <div class="q"><span style="font-weight:700;color:var(--brand)">7.</span> Successful people tend to stick <input class="blank" data-b="to"> a routine.</div>
+    <div class="q"><span style="font-weight:700;color:var(--brand)">8.</span> Even with a <input class="blank" data-b="hectic"> schedule, he never skips breakfast.</div>
+  </div>
+
+  <!-- EX4 DRILL C -->
+  <div class="card">
+    <h2 class="sec">④ Drill C — Rapid VN → EN <span class="badge">6 pts</span></h2>
+    <div class="hint">Translate fast, use the right chunk, stay within the word limit. Don't translate word-for-word!</div>
+    <div class="q"><div class="prompt"><span class="n">1.</span><span class="vi">Tối nào mình cũng đọc sách để xả hơi.</span><span class="limit">(≤ 8 words)</span></div>
+      <textarea data-a="c0" data-lim="8"></textarea><div class="fb" id="fb_c0"></div></div>
+    <div class="q"><div class="prompt"><span class="n">2.</span><span class="vi">Nó lại ngủ gật trong giờ học rồi.</span><span class="limit">(≤ 7 words)</span></div>
+      <textarea data-a="c1" data-lim="7"></textarea><div class="fb" id="fb_c1"></div></div>
+    <div class="q"><div class="prompt"><span class="n">3.</span><span class="vi">Mình cứ trì hoãn mãi việc tập gym.</span><span class="limit">(≤ 8 words)</span></div>
+      <textarea data-a="c2" data-lim="8"></textarea><div class="fb" id="fb_c2"></div></div>
+    <div class="q"><div class="prompt"><span class="n">4.</span><span class="vi">Cuối cùng mình cũng dọn được cái tủ.</span><span class="limit">(≤ 8 words)</span></div>
+      <textarea data-a="c3" data-lim="8"></textarea><div class="fb" id="fb_c3"></div></div>
+    <div class="q"><div class="prompt"><span class="n">5.</span><span class="vi">Tuần này lịch của mình kín mít.</span><span class="limit">(≤ 7 words)</span></div>
+      <textarea data-a="c4" data-lim="7"></textarea><div class="fb" id="fb_c4"></div></div>
+    <div class="q"><div class="prompt"><span class="n">6.</span><span class="vi">Khó mà cân bằng giữa học và chơi.</span><span class="limit">(≤ 10 words)</span></div>
+      <textarea data-a="c5" data-lim="10"></textarea><div class="fb" id="fb_c5"></div></div>
+  </div>
+
+  <!-- EX5 SENTENCE APPLICATION -->
+  <div class="card sentapp">
+    <h2 class="sec">⑤ Sentence application <span class="badge">8 pts</span></h2>
+    <div class="hint">Write one real sentence of your own for each chunk (about your own daily life).</div>
+    <div class="q"><span class="tag"><code class="chunk">wind down</code></span><input class="txt" data-a="s0"></div>
+    <div class="q"><span class="tag"><code class="chunk">doze off</code></span><input class="txt" data-a="s1"></div>
+    <div class="q"><span class="tag"><code class="chunk">get around to</code></span><input class="txt" data-a="s2"></div>
+    <div class="q"><span class="tag"><code class="chunk">put off</code></span><input class="txt" data-a="s3"></div>
+    <div class="q"><span class="tag"><code class="chunk">a hectic schedule</code></span><input class="txt" data-a="s4"></div>
+    <div class="q"><span class="tag"><code class="chunk">on a daily basis</code></span><input class="txt" data-a="s5"></div>
+    <div class="q"><span class="tag"><code class="chunk">strike a balance between</code></span><input class="txt" data-a="s6"></div>
+    <div class="q"><span class="tag"><code class="chunk">stick to a routine</code></span><input class="txt" data-a="s7"></div>
+  </div>
+
+  <!-- EX6 PRODUCTION -->
+  <div class="card">
+    <h2 class="sec">⑥ Production — Write a paragraph <span class="badge">Chunk meter</span></h2>
+    <div class="hint"><b>Prompt:</b> Describe your typical weekday and how you unwind. Do you strike a balance between work/study and rest? (~120 words, use ≥ 5 chunks).</div>
+    <textarea id="prod" style="min-height:150px" oninput="updateMeter()"></textarea>
+    <div id="wordcount" class="hint" style="margin:6px 0 0">Words: 0</div>
+    <div id="chunkmeter">Chunks used: 0 / 8</div>
+    <div id="chips"></div>
+    <div class="note">💡 This part is not auto-graded. The chunk meter counts the chunks you weave in — aim for ≥ 5/8. The model answer uses 8/8.</div>
+  </div>
+
+  <div class="actions">
+    <button id="scoreBtn" onclick="scoreAll()">✓ Score my work</button>
+    <button id="pdfBtn" onclick="downloadPDF()">⬇ Download PDF report</button>
+    <button id="resetBtn" onclick="location.reload()">↺ Start over</button>
+  </div>
+
+  <div id="scorecard">
+    <h2>🏆 Your result</h2>
+    <div><span class="bigscore" id="scNum">0</span><span class="pct" id="scDen">/ 34</span><span class="pct" id="scPct"></span></div>
+    <div class="bar"><i id="scBar" style="width:0%"></i></div>
+    <div class="brk" id="scBrk"></div>
+    <div class="verdict-line" id="scVerdict"></div>
+    <div class="note" id="scChunk"></div>
+    <div class="review" id="scReview"></div>
+  </div>
+
+  <footer>30-Day Phrasal Verbs &amp; Collocations Building — Day 1 · Auto-scoring &amp; PDF export</footer>
+</div>
+
+<script>
+// ---------- setup ----------
+document.getElementById('stDate').value = new Date().toISOString().slice(0,10);
+
+function norm(s){return (s||'').toLowerCase().replace(/[’'`]/g,'').replace(/[^a-z\s]/g,' ').replace(/\s+/g,' ').trim();}
+function wc(s){var t=norm(s);return t?t.split(' ').length:0;}
+function has(s,arr){var n=' '+norm(s)+' ';return arr.some(function(p){return n.indexOf(' '+p+' ')>-1 || n.indexOf(p)>-1;});}
+
+// chunk variant dictionary
+var CHUNKS = [
+  {name:'wind down', v:['wind down','winding down','winds down','wound down','wind me down']},
+  {name:'doze off', v:['doze off','dozed off','dozes off','dozing off']},
+  {name:'get around to', v:['get around to','got around to','getting around to','gets around to','get round to','got round to']},
+  {name:'put off', v:['put off','putting off','puts off','put it off','putting it off','put them off','put that off']},
+  {name:'a hectic schedule', v:['hectic schedule']},
+  {name:'on a daily basis', v:['on a daily basis','a daily basis']},
+  {name:'strike a balance between', v:['strike a balance','striking a balance','struck a balance','strikes a balance','a balance between']},
+  {name:'stick to a routine', v:['stick to a routine','sticking to a routine','sticks to a routine','stuck to a routine','stick to my routine','sticking to my routine','stick to the routine']}
+];
+function ci(i){return CHUNKS[i].v;}
+
+// answer keys (which chunk each item expects)
+var trapKeys=[ ci(0), ci(1), ci(2).concat(ci(3)) ];
+var aKeys=[ ci(0), ci(1), ci(2), ci(4), ci(5), ci(6) ];
+var cKeys=[ ci(0), ci(1), ci(3), ci(2), ci(4), ci(6) ];
+var sentKeys=[ci(0),ci(1),ci(2),ci(3),ci(4),ci(5),ci(6),ci(7)];
+
+// suggested model answers
+var MODEL = {
+  trap:[
+    'After a long day, I usually wind down before bed.',
+    'I was so tired that I dozed off while watching TV.',
+    'I kept putting it off, but I finally got around to cleaning my room yesterday.'
+  ],
+  a:[
+    'In the evening, I usually wind down before sleeping.',
+    'I was so tired that I dozed off on the bus.',
+    'I only got around to replying to those emails this morning.',
+    'I have a hectic schedule this week.',
+    'He checks the news on a daily basis.',
+    "As a student, it's hard to strike a balance between studying and resting."
+  ],
+  b:['down','off','off','around','to','between','and','on','basis','to','hectic'],
+  c:[
+    'I read to wind down every night.',
+    'He dozed off in class again.',
+    'I keep putting off the gym.',
+    'I finally got around to tidying the wardrobe.',
+    'I have a hectic schedule this week.',
+    "It's hard to strike a balance between study and fun."
+  ],
+  s:[
+    'I like to wind down with a cup of tea after class.',
+    'I often doze off on the train home.',
+    'I finally got around to fixing my bike last weekend.',
+    'I always put off doing the dishes until the morning.',
+    'I have a hectic schedule during exam season.',
+    'I practise English on a daily basis.',
+    'I try to strike a balance between studying and sleeping.',
+    'I feel better when I stick to a routine.'
+  ],
+  prod:'On a typical weekday, I have a hectic schedule: I study from nine to five and tutor online in the evening. Because I check messages on a daily basis, my mind rarely switches off, so I make a point of setting aside an hour to wind down — usually with a book or a slow walk. I used to put off small tasks like tidying my desk, but I have learned that clearing them quickly stops them from piling up, and last weekend I finally got around to organising my whole bookshelf. The hardest part is striking a balance between productivity and rest; if I skip my break, I simply doze off at my desk. Now I stick to a routine, and it works.'
+};
+
+var results={};
+
+function setFb(id,cls,verdict,model){
+  var e=document.getElementById(id);
+  e.className='fb show '+cls;
+  var html='<span class="verdict">'+verdict+'</span>';
+  if(model) html+='<div class="model"><b>Suggested:</b> '+model+'</div>';
+  e.innerHTML=html;
+}
+
+// ---------- chunk meter ----------
+function updateMeter(){
+  var t=document.getElementById('prod').value;
+  document.getElementById('wordcount').textContent='Words: '+wc(t);
+  var used=0, chips='';
+  CHUNKS.forEach(function(c){
+    var on=has(t,c.v); if(on)used++;
+    chips+='<span class="chip'+(on?' on':'')+'">'+(on?'✓ ':'')+c.name+'</span>';
+  });
+  document.getElementById('chunkmeter').textContent='Chunks used: '+used+' / 8';
+  document.getElementById('chips').innerHTML=chips;
+  return used;
+}
+
+// ---------- scoring ----------
+function scoreAll(){
+  var brk={trap:0,a:0,b:0,c:0,s:0};
+  var review=[]; // {sec,label,your,model,ok}
+  function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+  // Trap (3)
+  for(var i=0;i<3;i++){
+    var v=document.querySelector('[data-a="trap'+i+'"]').value;
+    var ok=has(v,trapKeys[i]);
+    if(ok){brk.trap++;setFb('fb_trap'+i,'good','✓ Correct — chunk used and much shorter.',MODEL.trap[i]);}
+    else setFb('fb_trap'+i,'bad','✗ Missing the target chunk.',MODEL.trap[i]);
+    review.push({sec:'① Trap',label:'T'+(i+1),your:v,model:MODEL.trap[i],ok:ok});
+  }
+  // Drill A (6)
+  for(var i=0;i<6;i++){
+    var v=document.querySelector('[data-a="a'+i+'"]').value;
+    var ok=has(v,aKeys[i]);
+    if(ok){brk.a++;setFb('fb_a'+i,'good','✓ Correct.',MODEL.a[i]);}
+    else setFb('fb_a'+i,'bad','✗ Use the right chunk.',MODEL.a[i]);
+    review.push({sec:'② Drill A',label:'A'+(i+1),your:v,model:MODEL.a[i],ok:ok});
+  }
+  // Drill B (11 blanks)
+  var bYour=[];
+  document.querySelectorAll('[data-b]').forEach(function(inp){
+    var ok=norm(inp.value)===norm(inp.getAttribute('data-b'));
+    inp.style.background=ok?'#dcfce7':'#fee2e2';
+    inp.style.borderColor=ok?'#16a34a':'#dc2626';
+    if(ok)brk.b++;
+    bYour.push((inp.value||'—'));
+  });
+  review.push({sec:'③ Drill B',label:'Particles',your:bYour.join(' / '),model:MODEL.b.join(' / '),ok:(brk.b===11)});
+  // Drill C (6)
+  for(var i=0;i<6;i++){
+    var el=document.querySelector('[data-a="c'+i+'"]');
+    var v=el.value, lim=parseInt(el.getAttribute('data-lim'),10);
+    var okChunk=has(v,cKeys[i]); var n=wc(v); var ok=okChunk&&n<=lim;
+    if(ok){brk.c++;setFb('fb_c'+i,'good','✓ Correct — '+n+' words (≤'+lim+').',MODEL.c[i]);}
+    else if(okChunk&&n>lim){setFb('fb_c'+i,'warn','◐ Right chunk but '+n+' words > limit '+lim+'. Trim it!',MODEL.c[i]);}
+    else setFb('fb_c'+i,'bad','✗ Missing the target chunk.',MODEL.c[i]);
+    review.push({sec:'④ Drill C',label:'C'+(i+1),your:v,model:MODEL.c[i],ok:ok});
+  }
+  // Sentence application (8)
+  for(var i=0;i<8;i++){
+    var el=document.querySelector('[data-a="s'+i+'"]');
+    var ok=has(el.value,sentKeys[i]) && wc(el.value)>=4;
+    el.style.borderColor=ok?'#16a34a':'#dc2626';
+    el.style.background=ok?'#f0fdf4':'#fff';
+    if(ok)brk.s++;
+    review.push({sec:'⑤ Sentence',label:CHUNKS[i].name,your:el.value,model:MODEL.s[i],ok:ok});
+  }
+
+  var got=brk.trap+brk.a+brk.b+brk.c+brk.s, max=34;
+  var used=updateMeter();
+  var pct=Math.round(got/max*100);
+
+  document.getElementById('scNum').textContent=got;
+  document.getElementById('scPct').textContent='· '+pct+'%';
+  document.getElementById('scBar').style.width=pct+'%';
+  document.getElementById('scBrk').innerHTML=
+    row('① Wordiness trap',brk.trap,3)+row('② Drill A — trim',brk.a,6)+
+    row('③ Drill B — gap fill',brk.b,11)+row('④ Drill C — VN→EN',brk.c,6)+
+    row('⑤ Sentence application',brk.s,8);
+  var vd = pct>=90?'🌟 Excellent! You compress sentences well — almost no wordiness left.':
+           pct>=70?'👍 Good! A few sentences are still long — review the items marked in red.':
+           pct>=50?'💪 Fair — drill A & C again to build faster recall.':
+           '📖 Review "Today\'s chunks" and redo the drills.';
+  document.getElementById('scVerdict').textContent=vd;
+  document.getElementById('scChunk').innerHTML='✍️ <b>Production chunk meter:</b> '+used+' / 8 chunks '+(used>=5?'— target met ✓':'— below target (aim ≥5); add more chunks to your paragraph.');
+
+  // on-screen review table
+  var rev='<h3>📋 Answer review — your answer vs. suggested</h3><table>'+
+    '<tr><th style="width:70px">Item</th><th>Your answer</th><th style="width:34px">✓</th><th>Suggested model answer</th></tr>';
+  review.forEach(function(r){
+    rev+='<tr><td>'+r.label+'</td><td>'+(esc(r.your)||'—')+'</td>'+
+      '<td class="yn" style="color:'+(r.ok?'#16a34a':'#dc2626')+'">'+(r.ok?'✓':'✗')+'</td>'+
+      '<td class="mdl">'+esc(r.model)+'</td></tr>';
+  });
+  rev+='</table>';
+  document.getElementById('scReview').innerHTML=rev;
+
+  results={name:document.getElementById('stName').value||'(no name)',
+    date:document.getElementById('stDate').value,cls:document.getElementById('stClass').value,
+    got:got,max:max,pct:pct,brk:brk,used:used,verdict:vd,review:review,
+    prod:document.getElementById('prod').value};
+
+  document.getElementById('scorecard').style.display='block';
+  document.getElementById('pdfBtn').style.display='inline-block';
+  document.getElementById('scorecard').scrollIntoView({behavior:'smooth'});
+}
+function row(l,g,m){return '<div class="lbl">'+l+'</div><div><b>'+g+'</b> / '+m+'</div>';}
+
+// ---------- PDF ----------
+function downloadPDF(){
+  if(!results.name){alert('Please click "Score my work" first.');return;}
+  var btn=document.getElementById('pdfBtn'); var old=btn.textContent; btn.textContent='Generating PDF...';
+  function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  var b=results.brk;
+  var rep=document.createElement('div');
+  rep.style.cssText='width:760px;padding:36px;background:#fff;font-family:-apple-system,Segoe UI,Arial,sans-serif;color:#1e293b';
+
+  var revRows='';
+  results.review.forEach(function(r){
+    revRows+='<tr>'+
+      '<td style="padding:6px;border:1px solid #e2e8f0;color:#475569;white-space:nowrap">'+esc(r.label)+'</td>'+
+      '<td style="padding:6px;border:1px solid #e2e8f0">'+(esc(r.your)||'—')+'</td>'+
+      '<td style="padding:6px;border:1px solid #e2e8f0;text-align:center;font-weight:700;color:'+(r.ok?'#16a34a':'#dc2626')+'">'+(r.ok?'✓':'✗')+'</td>'+
+      '<td style="padding:6px;border:1px solid #e2e8f0;color:#3730a3">'+esc(r.model)+'</td></tr>';
+  });
+
+  rep.innerHTML=
+  '<div style="border-bottom:3px solid #4338ca;padding-bottom:12px;margin-bottom:18px">'+
+    '<div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#818cf8;margin-bottom:4px">Huong Stella Paradigm</div>'+
+    '<div style="font-size:22px;font-weight:800;color:#4338ca">Day 1 — Daily Routines &amp; Habits</div>'+
+    '<div style="font-size:13px;color:#475569">30-Day Phrasal Verbs &amp; Collocations Building · Result report with model answers</div>'+
+  '</div>'+
+  '<table style="width:100%;font-size:14px;border-collapse:collapse;margin-bottom:18px">'+
+    '<tr><td style="padding:4px 0"><b>Student:</b> '+esc(results.name)+'</td>'+
+    '<td style="padding:4px 0"><b>Date:</b> '+esc(results.date)+'</td>'+
+    '<td style="padding:4px 0"><b>Class:</b> '+(esc(results.cls)||'—')+'</td></tr></table>'+
+  '<div style="background:#eef2ff;border-radius:12px;padding:18px;text-align:center;margin-bottom:18px">'+
+    '<div style="font-size:38px;font-weight:800;color:#4338ca">'+results.got+' / '+results.max+
+    '<span style="font-size:18px;color:#475569"> · '+results.pct+'%</span></div>'+
+    '<div style="font-size:14px;font-weight:600;margin-top:6px">'+esc(results.verdict)+'</div></div>'+
+  '<table style="width:100%;border-collapse:collapse;font-size:13.5px;margin-bottom:18px">'+
+    '<tr style="background:#eef2ff;color:#4338ca"><th style="text-align:left;padding:7px;border:1px solid #e2e8f0">Section</th><th style="padding:7px;border:1px solid #e2e8f0">Score</th></tr>'+
+    trow('① Wordiness trap',b.trap,3)+trow('② Drill A — trim',b.a,6)+
+    trow('③ Drill B — gap fill',b.b,11)+trow('④ Drill C — VN→EN',b.c,6)+
+    trow('⑤ Sentence application',b.s,8)+
+    '<tr><td style="padding:7px;border:1px solid #e2e8f0"><b>Production chunk meter</b></td><td style="text-align:center;padding:7px;border:1px solid #e2e8f0"><b>'+results.used+' / 8</b></td></tr>'+
+  '</table>'+
+  '<div style="font-size:15px;font-weight:700;color:#4338ca;margin-bottom:6px">📋 Answer review — your answer vs. suggested model answer</div>'+
+  '<table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:18px">'+
+    '<tr style="background:#eef2ff;color:#4338ca"><th style="text-align:left;padding:6px;border:1px solid #e2e8f0;width:80px">Item</th><th style="text-align:left;padding:6px;border:1px solid #e2e8f0">Your answer</th><th style="padding:6px;border:1px solid #e2e8f0;width:26px">✓</th><th style="text-align:left;padding:6px;border:1px solid #e2e8f0">Suggested model answer</th></tr>'+
+    revRows+
+  '</table>'+
+  '<div style="font-size:15px;font-weight:700;color:#4338ca;margin-bottom:6px">✍️ Your production paragraph</div>'+
+  '<div style="font-size:13px;border:1px solid #e2e8f0;border-radius:8px;padding:12px;background:#f8fafc;white-space:pre-wrap;line-height:1.6;margin-bottom:14px">'+(esc(results.prod)||'—')+'</div>'+
+  '<div style="font-size:15px;font-weight:700;color:#16a34a;margin-bottom:6px">🌟 Model production paragraph (8/8 chunks)</div>'+
+  '<div style="font-size:13px;border:1px solid #bbf7d0;border-radius:8px;padding:12px;background:#f0fdf4;line-height:1.6">'+esc(MODEL.prod)+'</div>'+
+  '<div style="text-align:center;color:#94a3b8;font-size:11px;margin-top:18px">Generated by 30-Day Building — Day 1 Interactive</div>';
+
+  document.body.appendChild(rep);
+  html2canvas(rep,{scale:2,backgroundColor:'#ffffff'}).then(function(canvas){
+    document.body.removeChild(rep);
+    var pdf=new window.jspdf.jsPDF('p','mm','a4');
+    var iw=190, ph=277, ih=canvas.height*iw/canvas.width;
+    var data=canvas.toDataURL('image/jpeg',0.95);
+    var left=ih, pos=10;
+    pdf.addImage(data,'JPEG',10,pos,iw,ih); left-=ph;
+    while(left>0){pos=10-(ih-left);pdf.addPage();pdf.addImage(data,'JPEG',10,pos,iw,ih);left-=ph;}
+    var fn=(results.name||'student').replace(/[^\w\s]/g,'').trim().replace(/\s+/g,'_')||'student';
+    pdf.save('Day1_Result_'+fn+'.pdf');
+    btn.textContent=old;
+  }).catch(function(e){alert('PDF error: '+e.message+'\\n(An internet connection is needed to load the PDF library.)');btn.textContent=old;});
+}
+function trow(l,g,m){return '<tr><td style="padding:6px;border:1px solid #e2e8f0">'+l+'</td><td style="text-align:center;padding:6px;border:1px solid #e2e8f0"><b>'+g+'</b> / '+m+'</td></tr>';}
+</script>
+</body>
+</html>
